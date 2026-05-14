@@ -106,7 +106,11 @@ export default function HomePage() {
             </Link>
 
             <nav className="hidden md:flex items-center gap-8">
-              {["#features", "#testimonials", "#pricing"].map(([href, label]) => (
+              {[
+                { href: "#features", label: "Características" },
+                { href: "#testimonials", label: "Testimonios" },
+                { href: "#pricing", label: "Precios" },
+              ].map(({ href, label }) => (
                 <a key={href} href={href} className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">
                   {label}
                 </a>

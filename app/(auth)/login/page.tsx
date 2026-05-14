@@ -3,66 +3,65 @@ import { Calendar } from 'lucide-react'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Iniciar Sesión | Brandito Reservas',
+  title: 'Iniciar Sesión | Brandito',
   description: 'Accede a tu panel de profesional',
 }
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex">
-      {/* Left Panel - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-primary text-primary-foreground flex-col justify-between p-12">
-        <div>
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
-              <Calendar className="w-6 h-6" />
-            </div>
-            <span className="text-2xl font-bold">Brandito</span>
-          </Link>
-        </div>
-        
-        <div className="space-y-6">
-          <h1 className="text-4xl font-bold leading-tight text-balance">
-            Gestiona tus citas de forma profesional
-          </h1>
-          <p className="text-lg text-primary-foreground/80 leading-relaxed">
-            Automatiza tus reservas, recibe pagos en línea y enfócate en lo que mejor haces: 
-            atender a tus clientes.
-          </p>
-        </div>
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <header className="p-6">
+        <Link href="/" className="flex items-center gap-2 w-fit">
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+            <Calendar className="w-4 h-4 text-primary-foreground" />
+          </div>
+          <span className="text-lg font-semibold tracking-tight">Brandito</span>
+        </Link>
+      </header>
 
-        <p className="text-sm text-primary-foreground/60">
-          Plataforma de reservas para profesionales independientes
-        </p>
-      </div>
-
-      {/* Right Panel - Form */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-background">
-        <div className="w-full max-w-md space-y-8">
-          <div className="lg:hidden flex items-center gap-3 justify-center mb-8">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <Calendar className="w-6 h-6 text-primary-foreground" />
+      {/* Main */}
+      <main className="flex-1 flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md">
+          {/* Form Card */}
+          <div className="bg-card rounded-2xl border border-border p-10 shadow-sm animate-scale-in">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl sm:text-4xl font-bold text-foreground">Bienvenido</h1>
+              <p className="mt-3 text-sm sm:text-base text-muted-foreground">Ingresa tus datos para continuar
+              </p>
             </div>
-            <span className="text-2xl font-bold">Brandito</span>
+
+            <LoginForm />
+
+            <div className="mt-6 text-center">
+              <p className="text-sm text-muted-foreground">
+                ¿No tienes cuenta?{' '}
+                <Link href="/register" className="font-medium text-primary hover:underline">
+                  Regístrate
+                </Link>
+              </p>
+            </div>
           </div>
 
-          <div className="space-y-2 text-center lg:text-left">
-            <h2 className="text-3xl font-bold tracking-tight">Bienvenido de nuevo</h2>
-            <p className="text-muted-foreground">
-              Ingresa tus credenciales para acceder a tu panel
-            </p>
-          </div>
-
-          <LoginForm />
-
-          <p className="text-center text-sm text-muted-foreground">
-            ¿No tienes una cuenta?{' '}
-            <Link href="/register" className="font-medium text-primary hover:underline">
-              Regístrate gratis
+          {/* Help text */}
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            ¿Olvidaste tu contraseña?{' '}
+            <Link href="/forgot-password" className="text-primary hover:underline">
+              Recupérala aquí
             </Link>
           </p>
         </div>
-      </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="p-6 text-center">
+        <p className="text-xs text-muted-foreground">
+          © 2024 Brandito ·{' '}
+          <Link href="/privacy" className="hover:underline">Privacidad</Link>
+          {' · '}
+          <Link href="/terms" className="hover:underline">Términos</Link>
+        </p>
+      </footer>
     </div>
   )
 }

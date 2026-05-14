@@ -1,8 +1,8 @@
 import { getCurrentProfessional } from "@/lib/auth"
 import { getBookings, getServices, getClients } from "@/lib/db"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, Users, Briefcase, TrendingUp } from "lucide-react"
-import { format, startOfMonth, endOfMonth, isAfter, isBefore, addDays } from "date-fns"
+import { Calendar, Users, Briefcase, Clock, DollarSign, Plus, ChevronRight } from "lucide-react"
+import { format, startOfMonth, endOfMonth, isAfter, isBefore } from "date-fns"
 import { es } from "date-fns/locale"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -37,6 +37,10 @@ export default async function DashboardPage() {
     .filter((b) => b.status === "confirmed" || b.status === "completed")
     .reduce((sum, b) => sum + (b.service_price || 0), 0)
 
+  const pendingRevenue = thisMonthBookings
+    .filter((b) => b.status === "pending")
+    .reduce((sum, b) => sum + (b.service_price || 0), 0)
+
   const todayBookings = upcomingBookings.filter(
     (b) => format(new Date(b.start_datetime), "yyyy-MM-dd") === format(now, "yyyy-MM-dd")
   )
@@ -51,17 +55,17 @@ export default async function DashboardPage() {
     {
       title: "Próximas Citas",
       value: upcomingBookings.length,
-      icon: TrendingUp,
+      icon: Clock,
       href: "/dashboard/bookings",
     },
     {
-      title: "Servicios Activos",
+      title: "Servicios",
       value: services.filter((s) => s.is_active).length,
       icon: Briefcase,
       href: "/dashboard/services",
     },
     {
-      title: "Total Clientes",
+      title: "Clientes",
       value: clients.length,
       icon: Users,
       href: "/dashboard/clients",
@@ -69,21 +73,30 @@ export default async function DashboardPage() {
   ]
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-foreground">
-          Bienvenido, {professional.name.split(" ")[0]}
-        </h1>
-        <p className="text-muted-foreground mt-1">
-          {format(now, "EEEE, d 'de' MMMM", { locale: es })}
-        </p>
+    <div className="max-w-6xl mx-auto space-y-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
+            Hola, {professional.name.split(" ")[0]}
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            {format(now, "EEEE, d 'de' MMMM", { locale: es })}
+          </p>
+        </div>
+        <Link href="/dashboard/bookings/new">
+          <Button className="gap-2">
+            <Plus className="w-4 h-4" />
+            Nueva Reserva
+          </Button>
+        </Link>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      {/* Stats */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => (
           <Link key={stat.title} href={stat.href}>
-            <Card className="hover:border-primary/50 transition-colors cursor-pointer">
+            <Card className="hover:border-primary/30 transition-colors cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {stat.title}
@@ -98,52 +111,84 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      {/* Revenue Card */}
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle className="text-lg">Ingresos del Mes</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-4xl font-bold text-foreground">
-            ${(confirmedRevenue / 100).toLocaleString("es-MX")} MXN
-          </p>
-          <p className="text-sm text-muted-foreground mt-1">
-            {thisMonthBookings.length} reservas en {format(now, "MMMM", { locale: es })}
-          </p>
-        </CardContent>
-      </Card>
+      {/* Revenue Row */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Revenue */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Ingresos del Mes
+            </CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold text-foreground">
+              ${(confirmedRevenue / 100).toLocaleString("es-MX")} MXN
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              {thisMonthBookings.length} reservas en {format(now, "MMMM", { locale: es })}
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Pending */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Pendiente de Cobro
+            </CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold text-foreground">
+              ${(pendingRevenue / 100).toLocaleString("es-MX")}
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              {thisMonthBookings.filter((b) => b.status === "pending").length} reservas pendientes
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Today's Appointments */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg">Citas de Hoy</CardTitle>
+          <div>
+            <CardTitle className="text-lg">Citas de Hoy</CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              {todayBookings.length > 0 ? `${todayBookings.length} cita${todayBookings.length > 1 ? 's' : ''}` : 'Sin citas'}
+            </p>
+          </div>
           <Link href="/dashboard/bookings">
-            <Button variant="outline" size="sm">
+            <Button variant="ghost" size="sm" className="gap-1">
               Ver todas
+              <ChevronRight className="w-4 h-4" />
             </Button>
           </Link>
         </CardHeader>
         <CardContent>
           {todayBookings.length === 0 ? (
-            <p className="text-muted-foreground text-center py-8">
-              No tienes citas programadas para hoy
-            </p>
+            <div className="text-center py-8">
+              <Calendar className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
+              <p className="text-muted-foreground">No hay citas programadas para hoy</p>
+            </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {todayBookings.slice(0, 5).map((booking) => (
                 <div
                   key={booking.id}
-                  className="flex items-center justify-between py-3 border-b border-border last:border-0"
+                  className="flex items-center justify-between p-4 bg-muted/30 rounded-lg"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="text-center">
-                      <p className="text-lg font-semibold text-foreground">
+                    <div className="text-center min-w-[50px]">
+                      <p className="text-lg font-bold text-foreground">
                         {format(new Date(booking.start_datetime), "HH:mm")}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {booking.service_duration || 60} min
+                        {booking.service_duration || 60}m
                       </p>
                     </div>
+                    <div className="h-8 w-px bg-border" />
                     <div>
                       <p className="font-medium text-foreground">
                         {booking.client_name}
@@ -176,6 +221,52 @@ export default async function DashboardPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Quick Actions */}
+      <div className="grid sm:grid-cols-3 gap-4">
+        <Link href="/dashboard/services/new">
+          <Card className="hover:border-primary/30 transition-colors cursor-pointer group">
+            <CardContent className="flex items-center gap-4 p-4">
+              <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                <Briefcase className="h-5 w-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium text-foreground">Nuevo Servicio</p>
+                <p className="text-sm text-muted-foreground">Agregar</p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/dashboard/clients/new">
+          <Card className="hover:border-primary/30 transition-colors cursor-pointer group">
+            <CardContent className="flex items-center gap-4 p-4">
+              <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                <Users className="h-5 w-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium text-foreground">Nuevo Cliente</p>
+                <p className="text-sm text-muted-foreground">Registrar</p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/dashboard/availability">
+          <Card className="hover:border-primary/30 transition-colors cursor-pointer group">
+            <CardContent className="flex items-center gap-4 p-4">
+              <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                <Calendar className="h-5 w-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium text-foreground">Disponibilidad</p>
+                <p className="text-sm text-muted-foreground">Editar</p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
     </div>
   )
 }

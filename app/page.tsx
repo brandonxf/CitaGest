@@ -224,13 +224,15 @@ export default function HomePage() {
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_0_4px_rgba(79,70,229,0.15)]" aria-hidden />
               Usado por
             </p>
-            {["Psicólogos","Dentistas","Coaches","Fisioterapeutas","Nutricionistas","Dermatólogos","Abogados"].map(p => (
-              <Link href="/pro/[slug]"
+
+            {["Psicólogos","Dentistas","Coaches","Fisioterapeutas","Nutricionistas","Dermatólogos","Abogados"].map((p) => (
+              <Link
                 key={p}
+                href="/pro"
                 className="relative inline-flex items-center justify-center text-sm font-semibold text-foreground/80 px-3 py-1 rounded-full border border-border/60 bg-card/50 backdrop-blur-sm hover:bg-card hover:border-primary/30 transition-all shadow-sm hover:shadow-primary/10"
               >
                 {p}
-              </span>
+              </Link>
             ))}
           </div>
         </div>

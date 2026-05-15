@@ -5,88 +5,84 @@ import { registerAction, type AuthState } from '@/app/actions/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { AlertCircle, Loader2 } from 'lucide-react'
+import { AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react'
+import { useState } from 'react'
 
 export function RegisterForm() {
-  const [state, formAction, isPending] = useActionState<AuthState, FormData>(
-    registerAction,
-    {}
-  )
+  const [state, formAction, isPending] = useActionState<AuthState, FormData>(registerAction, {})
+  const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form action={formAction} className="space-y-4">
       {state.error && (
-        <div className="flex items-center gap-2 p-3 text-sm text-destructive bg-destructive/10 rounded-lg">
-          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+        <div className="flex items-start gap-2.5 p-3 text-sm text-destructive bg-destructive/8 rounded-xl border border-destructive/15 animate-slide-down">
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <span>{state.error}</span>
         </div>
       )}
 
-      <div className="space-y-2">
-        <Label htmlFor="name">Nombre completo</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="name" className="text-sm font-medium">Nombre completo</Label>
         <Input
-          id="name"
-          name="name"
-          type="text"
+          id="name" name="name" type="text"
           placeholder="Dr. Juan Pérez"
-          required
-          autoComplete="name"
-          disabled={isPending}
+          required autoComplete="name" disabled={isPending}
+          className="h-10 bg-muted/40 border-border/80 focus:bg-background transition-colors placeholder:text-muted-foreground/50"
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Correo electrónico</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="email" className="text-sm font-medium">Correo electrónico</Label>
         <Input
-          id="email"
-          name="email"
-          type="email"
+          id="email" name="email" type="email"
           placeholder="tu@correo.com"
-          required
-          autoComplete="email"
-          disabled={isPending}
+          required autoComplete="email" disabled={isPending}
+          className="h-10 bg-muted/40 border-border/80 focus:bg-background transition-colors placeholder:text-muted-foreground/50"
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="profession">Profesión</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="profession" className="text-sm font-medium">Profesión</Label>
         <Input
-          id="profession"
-          name="profession"
-          type="text"
+          id="profession" name="profession" type="text"
           placeholder="Psicólogo, Coach, Dentista..."
           disabled={isPending}
+          className="h-10 bg-muted/40 border-border/80 focus:bg-background transition-colors placeholder:text-muted-foreground/50"
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="password">Contraseña</Label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          placeholder="Mínimo 8 caracteres"
-          required
-          minLength={8}
-          autoComplete="new-password"
-          disabled={isPending}
-        />
+      <div className="space-y-1.5">
+        <Label htmlFor="password" className="text-sm font-medium">Contraseña</Label>
+        <div className="relative">
+          <Input
+            id="password" name="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Mínimo 8 caracteres"
+            required minLength={8} autoComplete="new-password" disabled={isPending}
+            className="h-10 bg-muted/40 border-border/80 focus:bg-background transition-colors placeholder:text-muted-foreground/50 pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(v => !v)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            tabIndex={-1}
+          >
+            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          </button>
+        </div>
       </div>
 
-      <Button type="submit" className="w-full" disabled={isPending}>
+      <Button
+        type="submit"
+        className="w-full h-10 font-semibold shadow-sm shadow-primary/20 hover:shadow-primary/35 transition-all mt-1"
+        disabled={isPending}
+      >
         {isPending ? (
-          <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            Creando cuenta...
-          </>
+          <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Creando cuenta...</>
         ) : (
-          'Crear cuenta'
+          'Crear cuenta gratis'
         )}
       </Button>
-
-      <p className="text-xs text-center text-muted-foreground">
-        Al registrarte, aceptas nuestros términos de servicio y política de privacidad.
-      </p>
     </form>
   )
 }

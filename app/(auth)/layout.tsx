@@ -1,22 +1,122 @@
-import Link from "next/link"
+import { RegisterForm } from '@/components/auth/register-form'
+import { Calendar, ArrowLeft, Check } from 'lucide-react'
+import Link from 'next/link'
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export const metadata = {
+  title: 'Crear Cuenta | CitaGest',
+  description: 'Crea tu cuenta de profesional y comienza a recibir reservas',
+}
+
+export default function RegisterPage() {
   return (
-    <div className="min-h-screen bg-muted/30 flex flex-col">
-      <header className="py-6">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="text-xl font-semibold tracking-tight text-foreground">
-            Brandito
+    <div className="h-screen w-screen flex overflow-hidden bg-background">
+
+      {/* Panel izquierdo — solo desktop */}
+      <div className="hidden lg:flex w-[44%] shrink-0 flex-col bg-primary overflow-hidden relative">
+        <div aria-hidden className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-white/5 blur-2xl" />
+          <div className="absolute top-1/2 -right-20 w-56 h-56 rounded-full bg-violet-400/15 blur-2xl" />
+          <div className="absolute -bottom-24 left-1/3 w-80 h-80 rounded-full bg-indigo-900/50 blur-3xl" />
+        </div>
+
+        {/* Logo */}
+        <div className="relative px-8 pt-7 shrink-0">
+          <Link href="/" className="flex items-center gap-2.5 group w-fit">
+            <div className="w-8 h-8 bg-white/15 rounded-xl flex items-center justify-center border border-white/20 group-hover:bg-white/25 transition-colors">
+              <Calendar className="w-4 h-4 text-white" />
+            </div>
+            <span className="text-base font-bold text-white">CitaGest</span>
           </Link>
         </div>
-      </header>
-      <main className="flex-1 flex items-center justify-center py-12">
-        {children}
-      </main>
+
+        {/* Centro */}
+        <div className="relative flex-1 flex flex-col justify-center px-8">
+          <h2 className="text-2xl xl:text-3xl font-bold text-white leading-snug">
+            Empieza gratis hoy.<br />Sin tarjeta de crédito.
+          </h2>
+          <p className="mt-3 text-sm text-white/60 leading-relaxed max-w-xs">
+            Configura tu agenda en menos de 5 minutos y empieza a recibir reservas.
+          </p>
+          <div className="mt-6 space-y-2.5">
+            {[
+              "Página de reservas personalizada",
+              "Notificaciones automáticas",
+              "Panel de analítica incluido",
+              "Sin límite de clientes",
+              "Soporte por correo incluido",
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-2.5">
+                <div className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+                  <Check className="w-3 h-3 text-white" />
+                </div>
+                <p className="text-sm text-white/70">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Badge */}
+        <div className="relative mx-6 mb-7 p-4 bg-white/8 rounded-xl border border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-amber-400 flex items-center justify-center shrink-0">
+              <span className="text-sm font-bold text-amber-900">CM</span>
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-white">Carlos Mendoza</p>
+              <p className="text-[10px] text-white/45">Fisioterapeuta</p>
+            </div>
+          </div>
+          <p className="mt-3 text-xs text-white/70 leading-relaxed italic">
+            "Recuperé 3 horas diarias. Ahora las dedico a mis pacientes."
+          </p>
+        </div>
+      </div>
+
+      {/* Panel derecho */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Topbar */}
+        <div className="shrink-0 flex items-center justify-between px-6 lg:px-8 py-4 border-b border-border/60">
+          <Link href="/" className="lg:hidden flex items-center gap-2">
+            <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
+              <Calendar className="w-3.5 h-3.5 text-primary-foreground" />
+            </div>
+            <span className="font-bold text-sm text-foreground">CitaGest</span>
+          </Link>
+          <Link href="/" className="hidden lg:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Inicio
+          </Link>
+          <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            ¿Ya tienes cuenta? <span className="text-primary font-semibold">Inicia sesión</span>
+          </Link>
+        </div>
+
+        {/* Formulario centrado */}
+        <div className="flex-1 flex items-center justify-center px-6 overflow-hidden">
+          <div className="w-full max-w-[360px]">
+            <h1 className="text-xl font-bold text-foreground tracking-tight">Crea tu cuenta</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Completa tus datos para comenzar</p>
+            <div className="h-px bg-gradient-to-r from-primary/40 via-primary/10 to-transparent my-5" />
+            <RegisterForm />
+            <p className="mt-4 text-center text-xs text-muted-foreground">
+              Al registrarte aceptas nuestros{' '}
+              <Link href="/terms" className="text-primary/80 hover:text-primary hover:underline underline-offset-4">Términos</Link>
+              {' y '}
+              <Link href="/privacy" className="text-primary/80 hover:text-primary hover:underline underline-offset-4">Privacidad</Link>
+            </p>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="shrink-0 px-6 py-3 border-t border-border/50 text-center">
+          <p className="text-xs text-muted-foreground">
+            © 2025 CitaGest ·{' '}
+            <Link href="/privacy" className="hover:underline underline-offset-4">Privacidad</Link>
+            {' · '}
+            <Link href="/terms" className="hover:underline underline-offset-4">Términos</Link>
+          </p>
+        </div>
+      </div>
     </div>
   )
 }

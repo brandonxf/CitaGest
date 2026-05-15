@@ -13,44 +13,33 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form action={formAction} className="space-y-4">
       {state.error && (
-        <div className="flex items-start gap-2.5 p-3.5 text-sm text-destructive bg-destructive/8 rounded-xl border border-destructive/15 animate-slide-down">
-          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+        <div className="flex items-start gap-2.5 p-3 text-sm text-destructive bg-destructive/8 rounded-xl border border-destructive/15 animate-slide-down">
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <span>{state.error}</span>
         </div>
       )}
 
       <div className="space-y-1.5">
-        <Label htmlFor="email" className="text-sm font-medium text-foreground">
-          Correo electrónico
-        </Label>
+        <Label htmlFor="email" className="text-sm font-medium">Correo electrónico</Label>
         <Input
-          id="email"
-          name="email"
-          type="email"
+          id="email" name="email" type="email"
           placeholder="tu@correo.com"
-          required
-          autoComplete="email"
-          disabled={isPending}
-          className="h-11 bg-muted/40 border-border/80 focus:bg-background transition-colors placeholder:text-muted-foreground/50"
+          required autoComplete="email" disabled={isPending}
+          className="h-10 bg-muted/40 border-border/80 focus:bg-background transition-colors placeholder:text-muted-foreground/50"
         />
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="password" className="text-sm font-medium text-foreground">
-          Contraseña
-        </Label>
+        <Label htmlFor="password" className="text-sm font-medium">Contraseña</Label>
         <div className="relative">
           <Input
-            id="password"
-            name="password"
+            id="password" name="password"
             type={showPassword ? "text" : "password"}
             placeholder="••••••••"
-            required
-            autoComplete="current-password"
-            disabled={isPending}
-            className="h-11 bg-muted/40 border-border/80 focus:bg-background transition-colors placeholder:text-muted-foreground/50 pr-10"
+            required autoComplete="current-password" disabled={isPending}
+            className="h-10 bg-muted/40 border-border/80 focus:bg-background transition-colors placeholder:text-muted-foreground/50 pr-10"
           />
           <button
             type="button"
@@ -65,14 +54,11 @@ export function LoginForm() {
 
       <Button
         type="submit"
-        className="w-full h-11 font-semibold shadow-sm shadow-primary/20 hover:shadow-primary/35 transition-all"
+        className="w-full h-10 font-semibold shadow-sm shadow-primary/20 hover:shadow-primary/35 transition-all mt-1"
         disabled={isPending}
       >
         {isPending ? (
-          <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            Iniciando sesión...
-          </>
+          <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Iniciando sesión...</>
         ) : (
           'Iniciar sesión'
         )}

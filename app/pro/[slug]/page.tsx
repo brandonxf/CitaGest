@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation"
-import { getProfessionalBySlug, getActiveServices, getAvailability, getBookingsForDate } from "@/lib/db"
-import { PublicProfileClient } from "./public-profile-client"
+import { getProfessionalBySlug, getActiveServices, getAvailability } from "@/lib/db"
+import { PublicProfileClient } from "@/components/pro/public-profile-client"
 import Link from "next/link"
 import { Calendar } from "lucide-react"
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { slug } = params
-
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const professional = await getProfessionalBySlug(slug)
   if (!professional) return { title: "Profesional no encontrado" }
   return {
@@ -18,10 +17,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function ProfessionalPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const { slug } = params
-
+  const { slug } = await params
   const professional = await getProfessionalBySlug(slug)
 
   if (!professional) notFound()

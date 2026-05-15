@@ -54,7 +54,7 @@ function SidebarContent({ professional }: DashboardSidebarProps) {
       {/* Logo */}
       <div className="px-6 py-5 border-b border-border">
         <Link href="/dashboard" className="text-xl font-semibold tracking-tight text-foreground">
-          Brandito
+          CitaGest
         </Link>
       </div>
 
@@ -134,7 +134,7 @@ export function DashboardSidebar({ professional }: DashboardSidebarProps) {
       <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-background border-b border-border">
         <div className="flex items-center justify-between px-4 py-3">
           <Link href="/dashboard" className="text-xl font-semibold tracking-tight">
-            Brandito
+            CitaGest
           </Link>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>

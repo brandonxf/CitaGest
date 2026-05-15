@@ -220,9 +220,17 @@ export default function HomePage() {
       <div className="border-y border-border/60 bg-muted/20 py-5">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-2 opacity-50">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Usado por</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_0_4px_rgba(79,70,229,0.15)]" aria-hidden />
+              Usado por
+            </p>
             {["Psicólogos","Dentistas","Coaches","Fisioterapeutas","Nutricionistas","Dermatólogos","Abogados"].map(p => (
-              <span key={p} className="text-sm font-medium text-foreground/70">{p}</span>
+              <Link href="/pro/[slug]"
+                key={p}
+                className="relative inline-flex items-center justify-center text-sm font-semibold text-foreground/80 px-3 py-1 rounded-full border border-border/60 bg-card/50 backdrop-blur-sm hover:bg-card hover:border-primary/30 transition-all shadow-sm hover:shadow-primary/10"
+              >
+                {p}
+              </span>
             ))}
           </div>
         </div>

@@ -137,7 +137,11 @@ export default function HomePage() {
           {mobileMenuOpen && (
             <div className="md:hidden py-5 border-t border-border mt-4 animate-slide-down">
               <nav className="flex flex-col gap-4">
-                {[["#features","Características"],["#testimonials","Testimonios"],["#pricing","Precios"]].map(([href,label]) => (
+                {[
+                  { href: "#features", label: "Características" },
+                  { href: "#testimonials", label: "Testimonios" },
+                  { href: "#pricing", label: "Precios" },
+                ].map(({ href, label }) => (
                   <a key={href} href={href} className="text-sm text-muted-foreground font-medium" onClick={() => setMobileMenuOpen(false)}>{label}</a>
                 ))}
                 <div className="flex flex-col gap-2 pt-4 border-t border-border">
@@ -205,7 +209,11 @@ export default function HomePage() {
 
             {/* Stats */}
             <div className="mt-16 grid grid-cols-3 gap-6 max-w-lg mx-auto animate-slide-up delay-375">
-              {[["2,400+","Profesionales"],["98%","Satisfacción"],["80%","Menos ausencias"]].map(([val,label]) => (
+              {[
+                { val: "2,400+", label: "Profesionales" },
+                { val: "98%", label: "Satisfacción" },
+                { val: "80%", label: "Menos ausencias" },
+              ].map(({ val, label }) => (
                 <div key={label} className="text-center">
                   <p className="text-2xl font-bold text-foreground">{val}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{label}</p>

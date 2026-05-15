@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -45,9 +45,10 @@ export function ProfileSettings({ professional }: ProfileSettingsProps) {
     }
   }
 
-  const publicUrl = typeof window !== "undefined" 
-    ? `${window.location.origin}/${professional.slug}`
-    : `/${professional.slug}`
+  const [publicUrl, setPublicUrl] = useState(`/${professional.slug}`)
+  useEffect(() => {
+    setPublicUrl(`${window.location.origin}/${professional.slug}`)
+  }, [professional.slug])
 
   return (
     <div className="space-y-6">

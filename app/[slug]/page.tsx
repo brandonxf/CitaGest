@@ -21,7 +21,6 @@ export default async function ProfessionalPage({
 }) {
   const { slug } = await params
   const professional = await getProfessionalBySlug(slug)
-
   if (!professional) notFound()
 
   const [services, availability] = await Promise.all([
@@ -31,19 +30,21 @@ export default async function ProfessionalPage({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/60">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      {/* Header minimalista — solo logo, sin botones de sesión */}
+      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-primary rounded-xl flex items-center justify-center shadow-sm shadow-primary/25 group-hover:shadow-primary/40 transition-shadow">
-              <Calendar className="w-4 h-4 text-primary-foreground" />
+            <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm shadow-primary/25 group-hover:shadow-primary/40 transition-shadow">
+              <Calendar className="w-3.5 h-3.5 text-primary-foreground" />
             </div>
-            <span className="font-bold text-foreground">CitaGest</span>
+            <span className="text-sm font-bold text-foreground">CitaGest</span>
           </Link>
-          <div className="flex items-center gap-3 text-sm">
-            <Link href="/login" className="text-muted-foreground hover:text-foreground transition-colors">Iniciar sesión</Link>
-            <Link href="/register" className="px-3 py-1.5 bg-primary text-primary-foreground rounded-lg font-medium hover:brightness-110 transition">Registrarse</Link>
-          </div>
+          <Link
+            href="/"
+            className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+          >
+            ¿Eres profesional? →
+          </Link>
         </div>
       </header>
 
@@ -53,11 +54,11 @@ export default async function ProfessionalPage({
         availability={availability}
       />
 
-      <footer className="border-t border-border py-8 mt-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <p className="text-sm text-muted-foreground">
+      <footer className="border-t border-border/50 py-6 mt-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+          <p className="text-xs text-muted-foreground/50">
             Agenda gestionada con{" "}
-            <Link href="/" className="text-primary font-medium hover:underline">CitaGest</Link>
+            <Link href="/" className="text-primary/70 hover:text-primary transition-colors font-medium">CitaGest</Link>
           </p>
         </div>
       </footer>
